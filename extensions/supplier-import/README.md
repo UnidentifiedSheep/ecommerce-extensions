@@ -1,6 +1,6 @@
 # SpareParts: supplier import
 
-Version 0.4.1. Chrome / Edge (Manifest V3). One extension, separate adapters per supplier and page type.
+Version 0.4.2. Chrome / Edge / Firefox (Manifest V3). One extension, separate adapters per supplier and page type.
 
 | Supplier | Supported pages | JSON supplier |
 | --- | --- | --- |
@@ -10,6 +10,8 @@ Version 0.4.1. Chrome / Edge (Manifest V3). One extension, separate adapters per
 | Favorit Parts | https://lk.favorit-parts.ru/analogues/… | FavoritParts |
 
 ## Установка и использование
+
+Firefox 142+: после первого подписанного релиза установите `supplier-import-firefox.xpi` из GitHub Releases через `about:addons` → шестерёнка → «Установить дополнение из файла». Он сохраняется после перезапуска и получает обновления автоматически. `about:debugging` загружает расширение только временно. Для Chrome/Edge используйте ZIP и шаги ниже. Настройка подписи: https://github.com/UnidentifiedSheep/ecommerce-extensions/blob/main/docs/firefox.md
 
 1. В SpareParts откройте Контроль → Расширения. Скачайте ZIP и распакуйте в отдельную папку.
 2. Откройте chrome://extensions (Chrome) или edge://extensions (Edge).

@@ -7,6 +7,9 @@
   "scripts": {
     "test": "node --test",
     "build": "node scripts/build-supplier-extension.mjs",
-    "check": "node scripts/check.mjs && npm test && npm run build"
-  }
+    "check": "node scripts/check.mjs && npm test && npm run build",
+    "firefox:lint": "web-ext lint --source-dir extensions/supplier-import --self-hosted --warnings-as-errors",
+    "firefox:sign": "node scripts/sign-firefox.mjs"
+  },
+  "devDependencies": { "web-ext": "10.8.0" }
 }

@@ -8,4 +8,6 @@
 - Use pull requests for changes after the initial repository migration; do not merge without the user's instruction.
 - Bump `extensions/supplier-import/manifest.json` for a new release. A push changing it on `main` runs the release workflow.
 - Keep the download asset name `supplier-import-extension.zip` stable. The frontend uses the latest-release URL.
+- Never change the stable Firefox `gecko.id` after the first signed release. Firefox releases are unlisted AMO-signed XPI files; never rename an unsigned ZIP to XPI for installation.
+- Keep AMO credentials only in repository Actions secrets (`AMO_JWT_ISSUER`, `AMO_JWT_SECRET`). `npm ci` installs the pinned release/lint tooling; native tests/build still need no installed dependencies.
 - JSON formats are documented in `docs/json-contract.md`; coordinate breaking format changes with the frontend.

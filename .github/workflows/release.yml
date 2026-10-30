@@ -1,4 +1,4 @@
-name: Publish supplier extension ZIP
+name: Publish browser extensions
 on:
   push:
     branches: [main]
@@ -15,6 +15,7 @@ jobs:
   release:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
+    timeout-minutes: 25
     permissions:
       contents: write
     steps:
@@ -23,7 +24,8 @@ jobs:
         with:
           node-version: '22'
       - run: npm run check
-      - name: Publish versioned release
+      - name: Check release state
+        id: release
         env:
           GH_TOKEN: ${{ github.token }}
         shell: bash
@@ -32,11 +34,47 @@ jobs:
           version=$(node -p "JSON.parse(require('node:fs').readFileSync('extensions/supplier-import/manifest.json')).version")
           [[ "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+(\.[0-9]+)?$ ]]
           tag="supplier-import-v$version"
-          if gh release view "$tag" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
-            echo "Release $tag exists; increment manifest.version for a new ZIP."
-            exit 0
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+          if [[ "$(gh release view "$tag" --repo "$GITHUB_REPOSITORY" --json isDraft --jq .isDraft 2>/dev/null || true)" == "false" ]]; then
+            echo "published=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "published=false" >> "$GITHUB_OUTPUT"
           fi
-          (cd dist && sha256sum supplier-import-extension.zip > SHA256SUMS.txt)
-          gh release create "$tag" dist/supplier-import-extension.zip dist/SHA256SUMS.txt \
-            --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" \
-            --title "Supplier import $version" --generate-notes --latest
+      - name: Check Mozilla credentials
+        if: steps.release.outputs.published != 'true'
+        env:
+          AMO_JWT_ISSUER: ${{ secrets.AMO_JWT_ISSUER }}
+          AMO_JWT_SECRET: ${{ secrets.AMO_JWT_SECRET }}
+        run: |
+          if [ -z "$AMO_JWT_ISSUER" ] || [ -z "$AMO_JWT_SECRET" ]; then
+            echo "::error::Add AMO_JWT_ISSUER and AMO_JWT_SECRET in repository Actions secrets. No release will be published without a signed Firefox XPI."
+            exit 1
+          fi
+      - if: steps.release.outputs.published != 'true'
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - if: steps.release.outputs.published != 'true'
+        run: npm run firefox:lint
+      - name: Sign unlisted Firefox extension
+        if: steps.release.outputs.published != 'true'
+        env:
+          AMO_JWT_ISSUER: ${{ secrets.AMO_JWT_ISSUER }}
+          AMO_JWT_SECRET: ${{ secrets.AMO_JWT_SECRET }}
+        run: npm run firefox:sign
+      - if: steps.release.outputs.published != 'true'
+        run: node scripts/firefox-update.mjs
+      - name: Publish complete release
+        if: steps.release.outputs.published != 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ steps.release.outputs.tag }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          (cd dist && sha256sum supplier-import-extension.zip supplier-import-firefox.xpi firefox-updates.json > SHA256SUMS.txt)
+          if ! gh release view "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            gh release create "$RELEASE_TAG" --draft --repo "$GITHUB_REPOSITORY" \
+              --target "$GITHUB_SHA" --title "Supplier import $RELEASE_TAG" --generate-notes
+          fi
+          gh release upload "$RELEASE_TAG" dist/supplier-import-extension.zip dist/supplier-import-firefox.xpi \
+            dist/firefox-updates.json dist/SHA256SUMS.txt --repo "$GITHUB_REPOSITORY" --clobber
+          gh release edit "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --draft=false --latest
