@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SpareParts</title>
+  <link rel="stylesheet" href="popup.css">
+  <script type="module" src="popup.js"></script>
+</head>
+<body>
+  <header>
+    <div><strong>SpareParts</strong><h1 data-i18n="title"></h1></div>
+    <select id="locale" aria-label="Language"><option value="ru">RU</option><option value="en">EN</option><option value="tr">TR</option></select>
+  </header>
+  <p id="intro" data-i18n="intro" class="muted"></p>
+  <button id="scan" type="button" data-i18n="scan" class="primary"></button>
+  <p id="status" role="status" aria-live="polite"></p>
+  <section id="preview" hidden aria-labelledby="preview-heading">
+    <h2 id="preview-heading" data-i18n="preview"></h2>
+    <details id="group-info"><summary data-i18n="groupInfo"></summary><p data-i18n="groupHint" class="muted"></p></details>
+    <p id="loaded" class="notice"></p>
+    <p id="skipped" class="notice" hidden></p>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th data-i18n="reference"></th><th data-i18n="name"></th><th id="count-header" data-i18n="count" hidden></th><th id="price-header" data-i18n="price" hidden></th></tr></thead>
+        <tbody id="products"></tbody>
+      </table>
+    </div>
+    <div class="pagination"><button id="previous" type="button" data-i18n="previous"></button><span id="page"></span><button id="next" type="button" data-i18n="next"></button></div>
+  </section>
+  <div id="export" hidden>
+    <p id="summary" role="status"></p>
+    <footer><button id="copy" type="button" class="primary" data-i18n="copy"></button></footer>
+    <p id="import-hint" class="muted"></p>
+  </div>
+</body>
+</html>

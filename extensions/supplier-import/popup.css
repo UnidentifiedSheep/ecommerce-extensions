@@ -1,0 +1,35 @@
+:root { font: 14px/1.45 system-ui, sans-serif; color: #17263c; background: #fff; color-scheme: light; }
+* { box-sizing: border-box; }
+body { width: 600px; max-width: 100vw; max-height: 600px; padding: 16px; margin: 0; display: flex; flex-direction: column; overflow: hidden; }
+[hidden] { display: none !important; }
+header, footer, .pagination { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+header { align-items: flex-start; }
+header strong { color: #087860; }
+h1 { font-size: 19px; margin: 4px 0; }
+h2 { font-size: 15px; margin: 12px 0 4px; }
+p { margin: 10px 0; }
+.muted { color: #52637a; font-size: 13px; }
+details { color: #52637a; font-size: 13px; margin: 6px 0; }
+summary { cursor: pointer; }
+.notice { padding: 8px 10px; background: #fff5df; border-left: 3px solid #bc7900; color: #62460b; font-size: 13px; }
+button, select { font: inherit; border: 1px solid #b8c9c5; border-radius: 5px; background: #fff; color: inherit; padding: 7px 12px; cursor: pointer; }
+button.primary { background: #087860; border-color: #087860; color: #fff; }
+button:disabled { cursor: default; opacity: .5; }
+button:focus-visible, select:focus-visible, input:focus-visible { outline: 2px solid #1377c8; outline-offset: 2px; }
+.table-scroll { max-height: 260px; overflow: auto; border: 1px solid #e0e8eb; border-radius: 5px; }
+table { width: 100%; border-collapse: collapse; table-layout: fixed; font-size: 13px; }
+th, td { text-align: left; padding: 8px; border-bottom: 1px solid #e0e8eb; overflow-wrap: anywhere; }
+th { background: #f3f7f6; position: sticky; top: 0; z-index: 1; }
+th:first-child { width: 190px; }
+.purchase th:first-child { width: 140px; }
+.purchase th:nth-child(3) { width: 45px; }
+.purchase th:nth-child(4) { width: 85px; }
+td small { display: block; color: #52637a; margin-top: 2px; }
+.pagination { justify-content: flex-start; margin-top: 10px; font-size: 13px; }
+footer { justify-content: flex-end; }
+#preview { min-height: 0; overflow: auto; }
+#export { flex-shrink: 0; border-top: 1px solid #e0e8eb; margin-top: 8px; }
+header, body > p, #scan { flex-shrink: 0; }
+#status { color: #087860; }
+#status.error { color: #ad2121; }
+@media (max-width: 440px) { body { width: 100%; } th:first-child { width: 130px; } }

@@ -1,0 +1,42 @@
+name: Publish supplier extension ZIP
+on:
+  push:
+    branches: [main]
+    paths:
+      - extensions/supplier-import/manifest.json
+      - .github/workflows/release.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: supplier-extension-release
+  cancel-in-progress: false
+jobs:
+  release:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm run check
+      - name: Publish versioned release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          version=$(node -p "JSON.parse(require('node:fs').readFileSync('extensions/supplier-import/manifest.json')).version")
+          [[ "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+(\.[0-9]+)?$ ]]
+          tag="supplier-import-v$version"
+          if gh release view "$tag" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            echo "Release $tag exists; increment manifest.version for a new ZIP."
+            exit 0
+          fi
+          (cd dist && sha256sum supplier-import-extension.zip > SHA256SUMS.txt)
+          gh release create "$tag" dist/supplier-import-extension.zip dist/SHA256SUMS.txt \
+            --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" \
+            --title "Supplier import $version" --generate-notes --latest
