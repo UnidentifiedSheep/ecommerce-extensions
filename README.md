@@ -12,7 +12,7 @@
 
 Для Chrome/Edge обновите файлы в той же папке и нажмите «Обновить» на карточке расширения. Для постоянной установки Firefox и автоматических обновлений подготовлен подписанный unlisted XPI — см. [настройку Mozilla и установку Firefox](docs/firefox.md). Он становится доступен только после первого успешного подписанного релиза; публикация в каталоге не требуется.
 
-Поддержаны Armtek, Truck Motors и Favorit Parts; закупки — по фактурам Armtek. Подробнее: [инструкция расширения](extensions/supplier-import/README.md), [JSON-контракт](docs/json-contract.md).
+Поддержаны Armtek, Truck Motors и Favorit Parts; закупки — по фактурам Armtek и открытым деталям отгрузки Truck Motors. Подробнее: [инструкция расширения](extensions/supplier-import/README.md), [JSON-контракт](docs/json-contract.md).
 
 ## Разработка
 
