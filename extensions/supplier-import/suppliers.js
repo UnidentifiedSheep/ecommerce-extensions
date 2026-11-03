@@ -6,8 +6,9 @@ import { collectFavoritPage } from './adapters/favorit.js'
 export const supplierAdapters = [
   { host: 'etp.armtek.ru', supplier: 'Armtek', collect: collectArmtekInvoice, supports: path => /^\/invoice(?:\/|$)/.test(path) },
   { host: 'etp.armtek.ru', supplier: 'Armtek', collect: collectArmtekPage, supports: () => true },
-  { host: 'market.tmtr.ru', supplier: 'Tmtr', collect: collectTmtrPage, supports: path => /^\/goods\/[^/]+\/?$/.test(path) },
-  { host: 'lk.favorit-parts.ru', supplier: 'FavoritParts', collect: collectFavoritPage, supports: path => /^\/analogues(?:\/|$)/.test(path) },
+  // Shipment details are a dialog; the collector verifies its DOM rather than assuming a URL.
+  { host: 'market.tmtr.ru', supplier: 'Tmtr', collect: collectTmtrPage, supports: () => true },
+  { host: 'lk.favorit-parts.ru', supplier: 'FavoritParts', collect: collectFavoritPage, supports: path => /^\/(?:analogues|order)(?:\/|$)/.test(path) },
 ]
 export function getSupplierAdapter(address) {
   let url
