@@ -8,7 +8,7 @@ export const supplierAdapters = [
   { host: 'etp.armtek.ru', supplier: 'Armtek', collect: collectArmtekPage, supports: () => true },
   // Shipment details are a dialog; the collector verifies its DOM rather than assuming a URL.
   { host: 'market.tmtr.ru', supplier: 'Tmtr', collect: collectTmtrPage, supports: () => true },
-  { host: 'lk.favorit-parts.ru', supplier: 'FavoritParts', collect: collectFavoritPage, supports: path => /^\/analogues(?:\/|$)/.test(path) },
+  { host: 'lk.favorit-parts.ru', supplier: 'FavoritParts', collect: collectFavoritPage, supports: path => /^\/(?:analogues|order)(?:\/|$)/.test(path) },
 ]
 export function getSupplierAdapter(address) {
   let url

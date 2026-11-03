@@ -48,6 +48,8 @@ describe('supplier JSON contract', () => {
     ]) assert.equal(getSupplierAdapter(url)?.supplier, supplier)
     assert.equal(getSupplierAdapter('https://etp.armtek.ru/invoice/index/1/2')?.collect.name, 'collectArmtekInvoice')
     assert.equal(getSupplierAdapter('https://market.tmtr.ru/orders/balance')?.collect.name, 'collectTmtrPage')
+    assert.equal(getSupplierAdapter('https://lk.favorit-parts.ru/order/test/')?.collect.name, 'collectFavoritPage')
+    assert.equal(getSupplierAdapter('https://lk.favorit-parts.ru/orders/'), undefined)
     for (const url of ['invalid', 'http://etp.armtek.ru/search', 'https://etp.armtek.ru.example.org/search', 'https://market.tmtr.ru.example.org/orders/balance', 'https://lk.favorit-parts.ru/search/']) assert.equal(getSupplierAdapter(url), undefined)
   })
   it('keeps permissions minimal and translations aligned', async () => {

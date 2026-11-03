@@ -1,4 +1,4 @@
 {
   "extensionName": { "message": "SpareParts — supplier import" },
-  "extensionDescription": { "message": "Export supplier cross-reference groups, Armtek invoices and Truck Motors shipments as purchase JSON for SpareParts." }
+  "extensionDescription": { "message": "Export supplier cross-reference groups and Armtek, Truck Motors and Favorit Parts purchases as JSON for SpareParts." }
 }

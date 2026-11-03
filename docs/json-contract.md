@@ -20,4 +20,6 @@ The extension reads supplier pages and copies JSON; it never connects to the ECo
 
 Purchase sources: Armtek invoices and the open Truck Motors balance document dialog titled `Отгрузка`. Truck Motors exports `supplier: "Tmtr"`, reads the brand/SKU/name/quantity/unit-price columns and checks each line total. Shipment rows have `returnedCount: 0`; payment and return documents are excluded. Hidden rows and incomplete or unreadable visible pagination set `partial: true`. Detection uses the open document DOM on the exact HTTPS supplier host, so it does not depend on a specific balance-page URL.
 
+Favorit Parts individual orders (`/order/…`) export `supplier: "FavoritParts"`. Table header labels identify producer, SKU, name, quantity, unit price and line total. The collector excludes the `Итого` row and verifies the document total; duplicate positions remain separate and `returnedCount` is zero. Hidden product rows or visible pagination set `partial: true`. Supplier warehouse, order number and account data are excluded.
+
 Unknown currencies, partial invoices and returns require review in the frontend. No account, customer or invoice identifiers are exported. Examples used by standalone tests are in `tests/fixtures/`.
